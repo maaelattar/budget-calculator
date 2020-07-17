@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
-
+import { v4 as uuid } from 'uuid';
+import Alert from './components/Alert';
+import ExpenseForm from './components/ExpenseForm';
+import ExpenseList from './components/ExpenseList';
+const initialExpenses = [
+	{ id: uuid(), charge: 'rent', amount: 1600 },
+	{ id: uuid(), charge: 'car payment', amount: 400 },
+	{ id: uuid(), charge: 'credit card bill', amount: 1200 },
+];
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [expenses, useExpenses] = useState(initialExpenses);
+	console.log(expenses, 'aaaaaaa', useExpenses);
+	return (
+		<>
+			<Alert />
+			<h1>budget calculator</h1>
+			<main className='App'>
+				<ExpenseForm />
+				<ExpenseList expenses={expenses} />
+			</main>
+			<h1>
+				total spending:{' '}
+				<span className='total'>
+					${' '}
+					{expenses.reduce((acc, curr) => {
+						return (acc += curr.amount);
+					}, 0)}
+				</span>
+			</h1>
+		</>
+	);
 }
 
 export default App;
